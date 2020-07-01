@@ -1,33 +1,19 @@
-package ninja.genuine.tooltips.client.gui;
+package ninja.worldtooltips.tooltips.client.gui;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.nio.IntBuffer;
+import static ninja.worldtooltips.tooltips.client.render.RenderHelper.drawGradientRect;
 
-import ninja.genuine.tooltips.client.render.RenderHelper;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.I18n;
-
-@SuppressWarnings("unused")
-public class GuiColorPicker extends GuiScreen {
+/*public class GuiColorPicker extends Screen {
 
 	private static final String display = "Pick a color";
-	private GuiScreen parent;
-	private GuiTextField text;
+	private Screen parent;
+	private TextFieldWidget text;
 	private int hue, color;
 	private int sliderPos;
 	private int x, y, hueWidth = 10, width = 128, height = 128;
 	private IntBuffer colorBuffer = BufferUtils.createIntBuffer(4);
 
-	public GuiColorPicker(GuiScreen parent, GuiTextField text, String defaultText) {
+	public GuiColorPicker(Screen parent, TextFieldWidget text, String defaultText) {
+		super();
 		this.parent = parent;
 		this.text = text;
 		try {
@@ -47,9 +33,9 @@ public class GuiColorPicker extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		ScaledResolution sr = new ScaledResolution(mc);
-		addButton(new GuiButton(0, sr.getScaledWidth() / 2 - 100, sr.getScaledHeight() - 30, I18n.format("gui.cancel")));
-		addButton(new GuiButton(1, sr.getScaledWidth() / 2 - 100, sr.getScaledHeight() - 55, I18n.format("gui.done")));
+		ScaledResolution sr = new ScaledResolution(minecraft);
+		addButton(new Button(0, sr.getScaledWidth() / 2 - 100, sr.getScaledHeight() - 30, I18n.format("gui.cancel")));
+		addButton(new Button(1, sr.getScaledWidth() / 2 - 100, sr.getScaledHeight() - 55, I18n.format("gui.done")));
 		x = sr.getScaledWidth() / 2 - (width + hueWidth);
 		y = sr.getScaledHeight() / 2 - height / 2 - 20;
 	}
@@ -97,7 +83,7 @@ public class GuiColorPicker extends GuiScreen {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
+	protected void actionPerformed(Button button) throws IOException {
 		if (button.id == 0)
 			mc.displayGuiScreen(parent);
 		else if (button.id == 1) {
@@ -105,4 +91,4 @@ public class GuiColorPicker extends GuiScreen {
 			mc.displayGuiScreen(parent);
 		}
 	}
-}
+}*/

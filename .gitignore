@@ -47,3 +47,5 @@ build
 run
 *.launch
 *.html
+.idea
+out

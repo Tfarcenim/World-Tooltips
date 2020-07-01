@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "ninja.worldtooltips.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "worldtooltips.refmap.json",
+  "mixins": [
+    "ItemEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
