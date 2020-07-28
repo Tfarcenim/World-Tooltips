@@ -29,7 +29,9 @@ public class Hooks {
 			List<ITextComponent> tooltip = entity.getItem().getTooltip(mc.player, Minecraft.getInstance().
 							gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL);
 
-			tooltip.add(new StringTextComponent(ModUtils.getModName(entity)).applyTextStyles(TextFormatting.BLUE,TextFormatting.ITALIC));
+			if (!ClientConfig.hideModName()) {
+				tooltip.add(new StringTextComponent(ModUtils.getModName(entity)).applyTextStyles(TextFormatting.BLUE, TextFormatting.ITALIC));
+			}
 			int i = - 10 * tooltip.size();
 			for (int i1 = 0; i1 < tooltip.size(); i1++) {
 				ITextComponent string = tooltip.get(i1);

@@ -78,7 +78,7 @@ public class ClientConfig {
 		return hide_outline_color.get();
 	}
 
-	public static boolean isHidingModName() {
+	public static boolean hideModName() {
 		return hide_mod_name.get();
 	}
 

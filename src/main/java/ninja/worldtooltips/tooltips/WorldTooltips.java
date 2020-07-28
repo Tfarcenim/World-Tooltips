@@ -34,34 +34,11 @@ public class WorldTooltips {
 		instance = this;
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_SPEC);
 		IEventBus iEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		EVENT_BUS.addListener(this::tick);
 		iEventBus.addListener(this::pre);
 	}
 
-	private LinkedList<Tooltip> tooltips = new LinkedList<>();
-
-	public void tick(TickEvent.ClientTickEvent event) {
-		if (event.phase != TickEvent.Phase.START)
-			return;
-		tooltips.removeIf(Objects::isNull);
-		tooltips.removeIf(Tooltip::isDead);
-		tooltips.forEach(Tooltip::tick);
-		Optional<ItemEntity> mouseOver = ModUtils.getMouseOver();
-		if (mouseOver.isPresent()) {
-			boolean createTooltip = true;
-			ItemEntity entity = mouseOver.get();
-			for (Tooltip tooltip : tooltips)
-				if (tooltip.getEntity() == entity)
-					createTooltip = !tooltip.reset();
-			if (createTooltip)
-				tooltips.addFirst(new Tooltip(Minecraft.getInstance().player, entity));
-		}
-		for (int i = ClientConfig.getMaxTooltips(); i < tooltips.size(); i++)
-			tooltips.get(i).forceFade();
-	}
-
 	public void pre(FMLClientSetupEvent event) {
-		ClientRegistry.registerKeyBinding(configKey);
+		//ClientRegistry.registerKeyBinding(configKey);
 		ModUtils.post();
 	}
 }

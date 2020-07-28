@@ -45,7 +45,7 @@ public class Tooltip implements Comparable<Tooltip> {
 	private void generateTooltip(PlayerEntity player) {
 		boolean advanced = mc.gameSettings.advancedItemTooltips;
 		text = entity.getItem().getTooltip(player, advanced ? TooltipFlags.ADVANCED : TooltipFlags.NORMAL);
-		if (!modsAreLoaded() && !ClientConfig.isHidingModName())
+		if (!modsAreLoaded() && !ClientConfig.hideModName())
 		text.add(new StringTextComponent(ModUtils.getModName(entity)).applyTextStyles(TextFormatting.BLUE,TextFormatting.ITALIC,TextFormatting.RESET));
 		if (entity.getItem().getCount() > 1)
 			text.set(0,new StringTextComponent( entity.getItem().getCount() + " x " + text.get(0)));
