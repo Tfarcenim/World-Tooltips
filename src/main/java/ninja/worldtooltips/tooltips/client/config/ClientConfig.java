@@ -6,10 +6,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class ClientConfig {
 
-	public static final String category_general = "General";
-	public static final String category_appearance = "Appearance";
-	public static final String category_behavior = "Behavior";
-
 	public static ForgeConfigSpec.IntValue render_distance;
 	public static ForgeConfigSpec.IntValue max_tooltips;
 	public static ForgeConfigSpec.IntValue show_time;

@@ -7,6 +7,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -24,29 +27,26 @@ public class Hooks {
 
 	public static void renderItemEntityHook(ItemEntity entity, float p_225623_2_, MatrixStack matrices, IRenderTypeBuffer buffer, int light) {
 		double d0 = Minecraft.getInstance().getRenderManager().squareDistanceTo(entity);
-		if (d0 <= 4096.0D) {
+		if (d0 <= ClientConfig.getRenderDistance() * ClientConfig.getRenderDistance()) {
 			float f = entity.getHeight() + 0.5F;
 			List<ITextComponent> tooltip = entity.getItem().getTooltip(mc.player, Minecraft.getInstance().
 							gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL);
 
 			if (!ClientConfig.hideModName()) {
-				tooltip.add(new StringTextComponent(ModUtils.getModName(entity)).applyTextStyles(TextFormatting.BLUE, TextFormatting.ITALIC));
+				tooltip.add(new StringTextComponent(ModUtils.getModName(entity)).mergeStyle(TextFormatting.BLUE, TextFormatting.ITALIC));
 			}
 			int i = - 10 * tooltip.size();
 			for (int i1 = 0; i1 < tooltip.size(); i1++) {
-				ITextComponent string = tooltip.get(i1);
+				ITextComponent text = tooltip.get(i1);
 
 				if (i1 == 0) {
 					int count = entity.getItem().getCount();
 					if (count > 1)
-						string = string.appendSibling(new StringTextComponent(" x " + count));
+						text = ((IFormattableTextComponent)text).appendSibling(new StringTextComponent(" x" + count));
 				}
 
 				matrices.push();
 				matrices.translate(0, f, 0);
-
-
-
 
 				ActiveRenderInfo camera = mc.gameRenderer.getActiveRenderInfo();
 
@@ -55,13 +55,15 @@ public class Hooks {
 				//matrices.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
 				float scale = ClientConfig.scale.get().floatValue() * -.025f;
 
-				matrices.scale(scale,scale, scale);				Matrix4f matrix4f = matrices.getLast().getPositionMatrix();
+				matrices.scale(scale,scale, scale);
 				FontRenderer fontrenderer = Minecraft.getInstance().getRenderManager().getFontRenderer();
-				float f2 = -fontrenderer.getStringWidth(string.getFormattedText()) / 2f;
+				float f2 = -fontrenderer.getStringPropertyWidth(text) / 2f;
 
 				int alpha = (int) (ClientConfig.opacity.get() * 0xff);
 
-				fontrenderer.renderString(string.getFormattedText(), f2,i , alpha << 24 | 0xffffff, false, matrix4f, buffer, false, 0, light);
+				matrices.translate(0,0,.01);
+
+				fontrenderer.drawText(matrices,text, f2,i , alpha << 24 | 0xffffff);
 				i += 10;
 				matrices.pop();
 			}
@@ -74,10 +76,10 @@ public class Hooks {
 	private static void renderTooltip(ItemEntity entity, MatrixStack matrices, IRenderTypeBuffer buffer, List<ITextComponent> tooltip) {
 
 		IVertexBuilder builder = buffer.getBuffer(WorldTooltipsRenderType.getHealthBarType());
-		Matrix4f matrix4f = matrices.getLast().getPositionMatrix();
+		Matrix4f matrix4f = matrices.getLast().getMatrix();
 		float height = tooltip.size() * .25f + .10f;
 
-		List<Integer> list = tooltip.stream().map(ITextComponent::getFormattedText).map(mc.fontRenderer::getStringWidth).collect(Collectors.toList());
+		List<Integer> list = tooltip.stream().map(mc.fontRenderer::getStringPropertyWidth).collect(Collectors.toList());
 		float width = Collections.max(list) * .026f + .12f;
 
 		float f = entity.getHeight() + 0.5F;
@@ -119,7 +121,7 @@ public class Hooks {
 	}
 
 
-	public static void fill(IVertexBuilder builder, Matrix4f matrix4f, float u, float width, float v, float height,float z, int aarrggbb) {
+	public static void fill(IVertexBuilder builder, Matrix4f matrix4f, float u, float width, float v, float height, float z, int aarrggbb) {
 		float a = (aarrggbb >> 24 & 0xff) / 255f;
 		float r = (aarrggbb >> 16 & 0xff) / 255f;
 		float g = (aarrggbb >> 8 & 0xff) / 255f;
